@@ -4,31 +4,56 @@
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
   // Country/lang check: non-Brazil users -> /en
-  (function countryRedirect(){
-    try {
-      const qs = new URLSearchParams(location.search);
-      if (qs.has('no-redirect')) return; // manual bypass
-      if (location.pathname.startsWith('/en')) return; // already EN
-      if (sessionStorage.getItem('country-redirect-done') === '1') return;
+ (async function geoRedirect() {
+  const path = location.pathname.replace(/\/+$/, ""); // remove trailing slash (exceto "/")
+  const isEN = path === "/en" || path.startsWith("/en/");
+  const isRoot = path === "" || path === "/";
 
-      const langs = (navigator.languages || [navigator.language || '']).join(',').toLowerCase();
-      const hasPtBr = /pt\-br/.test(langs);
-      const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
-      const tzBR = new Set([
-        'america/sao_paulo','america/fortaleza','america/recife','america/bahia','america/maceio',
-        'america/manaus','america/belem','america/porto_velho','america/boa_vista','america/eirunepe',
-        'america/rio_branco','america/noronha','america/campo_grande','america/cuiaba','america/araguaina','america/santarem'
-      ]);
-      const isBrazil = hasPtBr || tzBR.has(tz);
-      if (!isBrazil) {
-        sessionStorage.setItem('country-redirect-done','1');
-        const target = '/en' + (location.search || '') + (location.hash || '');
-        location.replace(target);
-      } else {
-        sessionStorage.setItem('country-redirect-done','1');
+  // Não faz nada se o usuário já escolheu manualmente (opcional)
+  // localStorage.setItem("lang_choice", "en"|"pt") em um botão/selector
+  const choice = localStorage.getItem("lang_choice");
+  if (choice === "en" && !isEN) return location.replace("/en" + location.search + location.hash);
+  if (choice === "pt" && isEN) return location.replace("/" + location.search + location.hash);
+
+  // Helper: navega sem criar histórico + preserva query/hash
+  const go = (to) => location.replace(to + location.search + location.hash);
+
+  // 1) Melhor opção: país via IP
+  try {
+    const res = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      const cc = (data && (data.country_code || data.country)) ? String(data.country_code || data.country).toUpperCase() : "";
+      if (cc) {
+        if (cc === "BR") {
+          if (isEN) return go("/");     // dentro do Brasil -> / normal
+          return;                       // já está em PT (ou outra rota), não força
+        } else {
+          if (!isEN) return go("/en");  // fora do Brasil -> /en
+          return;
+        }
       }
-    } catch (_) {}
-  })();
+    }
+  } catch (_) { /* ignora e cai no fallback */ }
+
+  // 2) Fallback (menos confiável): timezone/idioma
+  const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || "").toLowerCase();
+  const lang = (navigator.language || "").toLowerCase();
+
+  const brazilTZ = new Set([
+    "america/sao_paulo","america/bahia","america/recife","america/fortaleza","america/belem",
+    "america/manaus","america/cuiaba","america/porto_velho","america/boa_vista","america/rio_branco",
+    "america/noronha"
+  ]);
+
+  const likelyBR = brazilTZ.has(tz) || lang.startsWith("pt-br");
+
+  if (likelyBR) {
+    if (isEN) return go("/");
+  } else {
+    if (!isEN) return go("/en");
+  }
+})();
 
   // Custom Cursor
   const cursor = document.createElement('div');
