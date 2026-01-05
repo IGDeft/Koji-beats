@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <!-- Vanta HALO -->
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js"></script>
+  
+    <!-- Title -->
+    <title>Koji Beats — Brazilian Beatmaker | RnB and Dark RnB</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/logo.jpeg">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Koji Beats theme overrides -->
+    <link rel="stylesheet" href="css/koji.css">
+    <!-- Navbar Font: Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    /* Elemento alvo do Vanta */
+    #wrapper{
+      position:fixed;
+      inset:0;
+      z-index:0;
+    }
+
+    /* Conteúdo opcional por cima (só pra você ver que funciona) *
+    /* Noise overlay (igual ao snippet do Webflow) */
+    #noise{
+      z-index:2;
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      opacity:.13;
+    }</style>
+
+</head>
+ <script>
+    // ===== Noise overlay (mesma lógica do seu HTML Webflow) =====
+    const noise = () => {
+      let canvas, ctx;
+      let wWidth, wHeight;
+      let noiseData = [];
+      let frame = 0;
+      let loopTimeout;
+
+      const createNoise = () => {
+        const idata = ctx.createImageData(wWidth, wHeight);
+        const buffer32 = new Uint32Array(idata.data.buffer);
+        const len = buffer32.length;
+        for (let i = 0; i < len; i++) {
+          if (Math.random() < 0.1) buffer32[i] = 0xff000000;
+        }
+        noiseData.push(idata);
+      };
+
+      const paintNoise = () => {
+        frame = (frame === 9) ? 0 : frame + 1;
+        ctx.putImageData(noiseData[frame], 0, 0);
+      };
+
+      const loop = () => {
+        paintNoise();
+        loopTimeout = window.setTimeout(() => {
+          window.requestAnimationFrame(loop);
+        }, (1000 / 25));
+      };
+
+      const setup = () => {
+        wWidth = window.innerWidth;
+        wHeight = window.innerHeight;
+        canvas.width = wWidth;
+        canvas.height = wHeight;
+        noiseData = [];
+        for (let i = 0; i < 10; i++) createNoise();
+        loop();
+      };
+
+      let resizeThrottle;
+      const reset = () => {
+        window.addEventListener('resize', () => {
+          window.clearTimeout(resizeThrottle);
+          resizeThrottle = window.setTimeout(() => {
+            window.clearTimeout(loopTimeout);
+            setup();
+          }, 200);
+        }, false);
+      };
+
+      canvas = document.getElementById('noise');
+      ctx = canvas.getContext('2d');
+      setup();
+      reset();
+    };
+    noise();
+
+    // ===== Vanta HALO (os mesmos parâmetros do seu snippet) =====
+    const vanta = VANTA.HALO({
+      el: "#wrapper",
+      mouseControls: true,
+      touchControls: true,
+      minHeight: 160.00,
+      minWidth: 160.00,
+      baseColor: 0x000000,
+      backgroundColor: 0x000000,
+      amplitudeFactor: 3.00,
+      xOffset: 0.01,
+      yOffset: 0.01,
+      size: 1.40
+    });
+
+    // Opcional: limpar ao sair
+    window.addEventListener('beforeunload', () => { if (vanta && vanta.destroy) vanta.destroy(); });
+  </script>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- VANTA HALO background + noise (não interfere no layout) -->
+   
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+        <!-- Navbar Area -->
+        <div class="oneMusic-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="oneMusicNav">
+
+                        <!-- Nav brand -->
+                        <a href="index.html" class="nav-brand"><img src="img/core-img/logo.jpeg" alt="Koji Beats Logo"></a>
+
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
+
+                        <!-- Menu -->
+                        <div class="classy-menu">
+
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <!-- Nav Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="#beat-store">Store</a></li>
+                                    <li><a href="https://www.beatstars.com/prodkoji7?utm_source=ig&utm_medium=social&utm_content=link_in_bio" target="_blank" rel="noopener">BeatStars</a></li>
+                                    <li><a href="https://www.instagram.com/koji.beats/" target="_blank" rel="noopener">Instagram</a></li>
+                                    <li><a href="https://www.youtube.com/@kojibeats7" target="_blank" rel="noopener">YouTube</a></li>
+                                    <li><a href="#contact">Contact</a></li>
+                                </ul>
+
+                                <!-- Primary CTA -->
+                                
+                            </div>
+                            <!-- Nav End -->
+
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Hero Area Start ##### -->
+   <section class="hero-area">
+    <!-- <div id="vanta-bg" aria-hidden="true"></div>
+    <canvas id="vanta-noise" aria-hidden="true"></canvas>-->
+        <div class="hero-slides owl-carousel">
+            <!-- Single Hero Slide (Video Background) -->
+            <div class="single-hero-slide d-flex align-items-center justify-content-center hero-drake">
+                
+                <!-- Foreground Content -->
+                 
+                <div class="drake-foreground container">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hero-slides-content text-center">
+                                <div class="hero-aurora" aria-hidden="true"><span class="o1"></span><span class="o2"></span><span class="o3"></span></div>
+                                <div class="mask-triangle mb-30">
+                                    <img src="img/core-img/koji-personal.jpeg" alt="Koji">
+                                </div>
+                                <h2 class="title glitch hero-typing">KOJI BEATS</h2>
+                                <p class="subtitle mt-15">Producing the future of Brazilian RnB and Dark RnB.</p>
+                                <div class="mt-40">
+                                    <a href="#musicas" class="btn oneMusic-btn btn-2 mr-10">PORTIFOLIO</a>
+                                    <a href="#contact" class="btn oneMusic-btn btn-2 ml-10">CONTACT</a>
+                                    <a href="#beat-store" id="heroBeatBtn" class="btn oneMusic-btn btn-2 ml-10">Store</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ##### Hero Area End ##### -->
+
+    <!-- ##### Latest Albums Area Start ##### -->
+
+      <section id="musicas" class="oneMusic-buy-now-area has-fluid section-padding-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading style-2">
+                      
+                        <h2 style="color:white;">Portifolio</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div id="musicas-grid" class="row"></div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="load-more-btn text-center wow fadeInUp" data-wow-delay="300ms">
+                        <button id="loadMoreMusicas" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+     
+
+    <!-- ##### Latest Albums Area End ##### -->
+
+    <!-- ##### Discografia (Grid do template) ##### -->
+   
+    <!-- ##### Buy Now Area End ##### -->
+
+    <!-- ##### Beat Store (Player + Top 3) ##### -->
+    <section id="beat-store" class="oneMusic-buy-now-area has-fluid section-padding-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading style-2">
+                        <p>Catalog | Store</p>
+                        <h2>Beats</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player (substitua o iframe pelo embed oficial do Airbit/BeatStars quando desejar) -->
+            <div class="row mb-50">
+                <div class="col-12 col-lg-10 offset-lg-1 d-flex justify-content-center">
+                    <iframe class="embed-player" src="https://player.beatstars.com/?storeId=151722" width="100%" height="1024" style="max-width:1024px;"> -- none -- </iframe>
+                    <!-- Airbit official player embed -->
+                    <!-- Player local (substitua o arquivo abaixo pelo seu .mp3) -->
+                   
+                </div>
+            </div>
+
+            <!-- Top 3 Beats da Semana -->
+            <!--<div class="row mb-30">
+                <div class="col-12 col-lg-10 offset-lg-1">
+                    <div class="section-heading style-2" style="margin-bottom:40px;">
+                        <p>Destaques</p>
+                        <h2>Top 3 da Semana</h2>
+                    </div>
+                    <div class="top-beats-grid">
+                        <div class="top-beat-card">
+                            <img src="img/bg-img/b1.jpg" alt="Between Us">
+                            <div class="hover-overlay">
+                                <a class="btn oneMusic-btn" href="https://airbit.com/koji777" target="_blank" rel="noopener">Comprar</a>
+                            </div>
+                            <div class="info">
+                                <strong>Between Us</strong>
+                                <button class="btn oneMusic-btn btn-2 play-snippet" data-src="audio/dummy-audio.mp3">Play</button>
+                            </div>
+                        </div>
+                        <div class="top-beat-card">
+                            <img src="img/bg-img/b2.jpg" alt="Faithful">
+                            <div class="hover-overlay">
+                                <a class="btn oneMusic-btn" href="https://airbit.com/koji777" target="_blank" rel="noopener">Airbit</a>
+                            </div>
+                            <div class="info">
+                                <strong>Faithful</strong>
+                                <button class="btn oneMusic-btn btn-2 play-snippet" data-src="audio/dummy-audio.mp3">Play</button>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </section>
+    <!-- ##### Beat Store End ##### -->
+
+    <!-- ##### Músicas (Grid) ##### -->
+  
+    <!-- ##### Featured Artist Area Start ##### -->
+    <section class="featured-artist-area section-padding-100 bg-img bg-overlay bg-fixed" style="">
+        <div class="container">
+            <div class="row align-items-end">
+                <div class="col-12 col-md-5 col-lg-4">
+                    <div class="featured-artist-thumb">
+                        <img src="img/core-img/logo.jpeg" alt="Koji Beats">
+                    </div>
+                </div>
+                <div class="col-12 col-md-7 col-lg-8">
+                    <div class="featured-artist-content">
+                        <!-- Section Heading -->
+                        <div class="section-heading white text-left mb-30">
+                            <p>Producer | Beatmaker | Brazil</p>
+                            <h2>Koji Beats</h2>
+                        </div>
+                        <p>My name is Lucas, artistically known as Koji.
+<br>
+I've been working in music production for about 3 years and I develop my sound through a type beats channel focused on dark R&B, where I've been consolidating my sonic identity.
+<br>
+Explore my beats and, if you want commissions, collaborations or licensing, get in touch.<div class="oneMusic-buttons mt-30">
+                             <a class="btn oneMusic-btn m-1" href="https://www.beatstars.com/prodkoji7?utm_source=ig&utm_medium=social&utm_content=link_in_bio" target="_blank" rel="noopener">BeatStars</a>
+                            <a class="btn oneMusic-btn m-1" href="https://www.instagram.com/koji.beats/" target="_blank" rel="noopener">Instagram</a>
+                            <a class="btn oneMusic-btn m-1" href="https://www.youtube.com/@kojibeats7" target="_blank" rel="noopener">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Featured Artist Area End ##### -->
+     
+
+    <!-- ##### Miscellaneous Area Start ##### -->
+    <section class="miscellaneous-area section-padding-100-0">
+        <div class="container">
+            <div class="row">
+                <!-- ***** Weeks Top ***** -->
+                <div class="col-12 d-none">
+                    <div class="weeks-top-area mb-100">
+                        <div class="section-heading text-left mb-50 wow fadeInUp" data-wow-delay="50ms">
+                            <p>See what’s new</p>
+                            <h2>This week’s top</h2>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="100ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/wt1.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <h6>Sam Smith</h6>
+                                <p>Underground</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="150ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/wt2.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <h6>Power Play</h6>
+                                <p>In my mind</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="200ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/wt3.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <h6>Cristinne Smith</h6>
+                                <p>My Music</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="250ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/wt4.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <h6>The Music Band</h6>
+                                <p>Underground</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="300ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/wt5.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <h6>Creative Lyrics</h6>
+                                <p>Songs and stuff</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="350ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/wt6.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <h6>The Culture</h6>
+                                <p>Pop Songs</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ***** New Hits Songs ***** -->
+
+                <!-- ***** Popular Artists ***** -->
+                <div class="col-12 d-none">
+                    <div class="popular-artists-area mb-100">
+                        <div class="section-heading text-left mb-50 wow fadeInUp" data-wow-delay="50ms">
+                            <p>Siga e ouça</p>
+                            <h2>Redes & Plataformas</h2>
+                        </div>
+
+                        <!-- Single Artist -->
+                      
+
+                        <!-- Single Artist -->
+                        <div class="single-artists d-flex align-items-center wow fadeInUp" data-wow-delay="150ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/pa2.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <p><a href="https://www.beatstars.com/prodkoji7?utm_source=ig&utm_medium=social&utm_content=link_in_bio" target="_blank" rel="noopener">BeatStars</a></p>
+                            </div>
+                        </div>
+
+                        <!-- Single Artist -->
+                        <div class="single-artists d-flex align-items-center wow fadeInUp" data-wow-delay="200ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/pa3.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <p><a href="https://www.instagram.com/koji.beats/" target="_blank" rel="noopener">Instagram</a></p>
+                            </div>
+                        </div>
+
+                        <!-- Single Artist -->
+                        <div class="single-artists d-flex align-items-center wow fadeInUp" data-wow-delay="250ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/pa4.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <p><a href="https://www.youtube.com/@kojibeats7" target="_blank" rel="noopener">YouTube</a></p>
+                            </div>
+                        </div>
+
+                        <!-- Single Artist -->
+                        <div class="single-artists d-flex align-items-center wow fadeInUp" data-wow-delay="300ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/pa5.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <p>DJ Ajay</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Artist -->
+                        <div class="single-artists d-flex align-items-center wow fadeInUp" data-wow-delay="350ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/pa6.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <p>Radio Vibez</p>
+                            </div>
+                        </div>
+
+                        <!-- Single Artist -->
+                        <div class="single-artists d-flex align-items-center wow fadeInUp" data-wow-delay="400ms">
+                            <div class="thumbnail">
+                                <img src="img/bg-img/pa7.jpg" alt="">
+                            </div>
+                            <div class="content-">
+                                <p>Music 4u</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Miscellaneous Area End ##### -->
+
+    
+
+    <!-- ##### Contact Area Start ##### -->
+    <section id="contact" class="contact-area section-padding-100 bg-img bg-overlay bg-fixed has-bg-img" style="">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading white wow fadeInUp" data-wow-delay="100ms">
+                        <p>Contact Me</p>
+                        <h2>Contact</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-form-area">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-10 col-lg-8 text-center contact-card">
+                                <p class="mb-30">Contact me via email, social media, or WhatsApp.</p>
+                                <div class="contact-actions">
+                                    <a class="btn oneMusic-btn btn-2 m-1" href="mailto:prodkoji7@gmail.com?subject=Contato%20via%20site&body=Hi%20Koji%20I%20Came%20From%20The%20Website">Enviar e-mail</a>
+                                    <a class="btn oneMusic-btn m-1" target="_blank" rel="noopener" href="https://www.instagram.com/koji.beats/">Instagram</a>
+                                    <a class="btn oneMusic-btn m-1" target="_blank" rel="noopener" href="https://www.youtube.com/@kojibeats7">YouTube</a>
+                                    <a class="btn oneMusic-btn m-1" target="_blank" rel="noopener" href="https://www.beatstars.com/prodkoji7">BeatStars</a>
+                                    <a class="btn oneMusic-btn m-1" target="_blank" rel="noopener" href="https://wa.me/5571984357615?text=Hi%20I%20Came%20From%20The%20Website">WhatsApp</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Contact Area End ##### -->
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area">
+        <div class="container">
+            <div class="row d-flex flex-wrap align-items-center">
+                <div class="col-12 col-md-6">
+                    <a href="#"><img src="img/core-img/logo.jpeg" alt="Koji Beats"></a>
+                    <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                </div>
+
+                
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area Start ##### -->
+
+    <!-- ##### All Javascript Script ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="js/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <!-- All Plugins js -->
+    <script src="js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="js/active.js"></script>
+    <!-- Vanta dependencies (three.js + halo) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js"></script>
+    <!-- Koji Beats JS (cursor, visualizer, dark room, players) -->
+    <script src="js/koji.js"></script>
+   <!-- <script src="js/halo-effect.js"></script> -->
+
+</body>
+
+</html>
